@@ -1,0 +1,21 @@
+{
+    "name": "sinergia/gd",
+    "type": "library",
+    "description": "GD Wrapper",
+    "keywords": ["gd", "image", "thumbnail"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcos Neves",
+            "homepage": "http://www.sinergia.mobi/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Sinergia\\Gd\\": ""
+        }
+    }
+}
