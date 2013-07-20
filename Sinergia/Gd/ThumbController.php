@@ -50,13 +50,14 @@ class ThumbController
 
     protected function saveCache(Image $image)
     {
+        $this->createCacheDir();
         $image->save($this->cache);
     }
 
     protected function createCacheDir()
     {
         if ( ! $this->cache->isDir() ) {
-            return mkdir($this->cache->getPath(), 0777, true);
+            return @mkdir($this->cache->getPath(), 0777, true);
         }
 
         return true;
@@ -88,8 +89,9 @@ class ThumbController
 
     protected function parseParams($path)
     {
-        $format = '@dir/@name.@size.@ext';
-        $pattern = $this->format2pattern($format);
+        //$format = '@size/@dir/@name.@ext';
+        //$pattern = $this->format2pattern($format);
+        $pattern = "!/(?<size>.+?)/(?<dir>.+)/(?<name>.+)\.(?<ext>.+)!";
         preg_match($pattern, $path, $matches);
         return $this->removeNumericKeys($matches);
     }

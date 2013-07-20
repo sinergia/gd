@@ -106,7 +106,7 @@ class Image
 
     public function save($file, $quality = 75)
     {
-        $this->output(pathinfo($file, PATHINFO_EXTENSION), $file, $quality);
+        $this->output(pathinfo((string)$file, PATHINFO_EXTENSION), (string)$file, $quality);
         return $this;
     }
 
