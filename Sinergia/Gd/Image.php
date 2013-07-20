@@ -85,6 +85,8 @@ class Image
 
     protected function output($ext, $file = null, $quality = 75)
     {
+        if ($file) $file = (string)$file;
+
         switch($ext) {
             case 'jpg':
             case 'jpeg':
