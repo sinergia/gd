@@ -27,4 +27,3 @@ class Point
         $this->y = $y;
     }
 }
-

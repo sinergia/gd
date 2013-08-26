@@ -45,6 +45,7 @@ class ThumbController
     {
         $cache_size = new Size(explode("x", $transformation));
         $source_image = new Image($this->source);
+
         return $source_image->resize( $source_image->size->fit($cache_size) );
     }
 
@@ -67,6 +68,7 @@ class ThumbController
     {
         $pattern = preg_quote($format, '!');
         $pattern = preg_replace('!@(\w+)!', '(?<\1>.+)', $pattern);
+
         return "!^$pattern$!";
     }
 
@@ -93,6 +95,7 @@ class ThumbController
         //$pattern = $this->format2pattern($format);
         $pattern = "!/(?<size>.+?)/(?<dir>.+)/(?<name>.+)\.(?<ext>.+)!";
         preg_match($pattern, $path, $matches);
+
         return $this->removeNumericKeys($matches);
     }
 

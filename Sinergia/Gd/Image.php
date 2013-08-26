@@ -74,20 +74,22 @@ class Image
             $src->origin->x, $src->origin->y,
             $dst->size->width, $dst->size->height,
             $src->size->width, $src->size->height);
+
         return $target;
     }
 
     public function resize(Size $size)
     {
         $new = new static($size);
+
         return $this->copyResampled($new);
     }
 
     protected function output($ext, $file = null, $quality = 75)
     {
-        if ($file) $file = (string)$file;
+        if ($file) $file = (string) $file;
 
-        switch($ext) {
+        switch ($ext) {
             case 'jpg':
             case 'jpeg':
                 imagejpeg($this->res, $file, $quality);
@@ -106,7 +108,8 @@ class Image
 
     public function save($file, $quality = 75)
     {
-        $this->output(pathinfo((string)$file, PATHINFO_EXTENSION), (string)$file, $quality);
+        $this->output(pathinfo((string) $file, PATHINFO_EXTENSION), (string) $file, $quality);
+
         return $this;
     }
 
