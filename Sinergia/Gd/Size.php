@@ -7,7 +7,7 @@ class Size
     public $width;
     public $height;
 
-    public function __construct($width, $height = null)
+    public function __construct($width = 100, $height = null)
     {
         if ( ! is_numeric($width) ) {
             if ( is_resource($image = $width) ) {
