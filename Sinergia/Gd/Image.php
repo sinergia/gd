@@ -48,8 +48,12 @@ class Image
         }
 
         $this->size = new Size($this->res);
+
         imagesavealpha($this->res, true);
         imagealphablending($this->res, false);
+
+        $transparent = imagecolorallocatealpha($this->res, 0, 0, 0, 127);
+        imagefill($this->res, 0, 0, $transparent);
     }
 
     public static function send($dst)
@@ -63,6 +67,22 @@ class Image
         header("Content-Length: $size");
 
         readfile($dst);
+    }
+
+    public function fill(Color $color, Point $point = null)
+    {
+        if (!$point) $point = new Point();
+        imagefill($this->res, $point->x, $point->y, $color->toGd($this->res));
+    }
+
+    public function setPixel(Color $color, Point $point)
+    {
+        if ( $color->hasAlpha() ) {
+            $color = $color->toGd($this->res);
+        } else {
+            $color = $color->toInt();
+        }
+        imagesetpixel($this->res, $point->x, $point->y, $color);
     }
 
     public function copyResampled(Image $target, Rect $src = null, Rect $dst = null)
