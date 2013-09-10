@@ -26,4 +26,9 @@ class Point
         $this->x = $x;
         $this->y = $y;
     }
+
+    public function __toString()
+    {
+        return sprintf("(%d, %d)", $this->x, $this->y);
+    }
 }

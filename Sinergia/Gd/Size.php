@@ -19,6 +19,11 @@ class Size
 
             } elseif ( is_string($file = $width) && is_readable($file) ) {
                 list($width, $height) = getimagesize($file);
+
+            } elseif ( $width instanceof static ) {
+                $size = $width;
+                $width = $size->width;
+                $height = $size->height;
             }
         }
         $this->width = $width;
@@ -46,6 +51,29 @@ class Size
     public function zoom($times)
     {
         return new static($times * $this->width, $times * $this->height);
+    }
+
+    /**
+     * Negative or float value
+     * @param $dx
+     * @param $dy
+     * @return Point
+     */
+    public function pointAt($dx, $dy)
+    {
+        if ($dx < 0) {
+            $dx = $this->width + $dx;
+        } elseif ($dx > 0 && $dx <= 1) {
+            $dx = round($this->width * $dx) - 1;
+        }
+
+        if ($dy < 0) {
+            $dy = $this->height + $dy;
+        } elseif ($dy > 0 && $dy <= 1) {
+            $dy = round($this->height * $dy) - 1;
+        }
+
+        return new Point($dx, $dy);
     }
 
     public function __toString()
