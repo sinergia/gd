@@ -13,12 +13,21 @@ class Image
     protected $size;
 
     /**
+     * File extension
+     * @var string
+     */
+    public $ext = 'jpg';
+
+    /**
      * @var Color
      */
     public $bg;
 
     public function __construct($width, $height = null)
     {
+        if (is_string($height)) {
+            $this->ext = $height;
+        }
         if ( is_resource($width) ) {
             $this->res = $width;
 
@@ -43,9 +52,11 @@ class Image
                 case 'jpg':
                 case 'jpeg':
                     $this->res = imagecreatefromjpeg($file);
+                    $this->ext = 'jpg';
                     break;
                 case 'png':
                     $this->res = imagecreatefrompng($file);
+                    $this->ext = 'png';
                     break;
                 default:
                     throw new RuntimeException("no $ext support from file '$file'");
@@ -99,7 +110,7 @@ class Image
     {
         $image = imagerotate($this->res, -$angle, $this->bg->toInt());
 
-        return new static($image);
+        return new static($image, $this->ext);
     }
 
     /**
@@ -108,7 +119,7 @@ class Image
      */
     public function flip($mode)
     {
-        $img = new static($this->res);
+        $img = new static($this->res, $this->ext);
         // flip changes by reference and returns bool
         $ret = imageflip($img->res, $mode);
 
@@ -182,12 +193,12 @@ class Image
 
     public function resize(Size $size)
     {
-        return $this->copyResized(new static($size));
+        return $this->copyResized(new static($size, $this->ext));
     }
 
     public function resample(Size $size)
     {
-        return $this->copyResampled(new static($size));
+        return $this->copyResampled(new static($size, $this->ext));
     }
 
     public function getColorAt(Point $point)
@@ -231,8 +242,9 @@ class Image
      * @param int $quality
      * @return $this
      */
-    public function flush($ext = 'jpg', $quality = 75)
+    public function flush($ext = null, $quality = 75)
     {
+        if (!$ext) $ext = $this->ext;
         $ext = strtolower($ext);
         if ($ext == 'jpg') $ext = 'jpeg';
         $mime = "image/$ext";

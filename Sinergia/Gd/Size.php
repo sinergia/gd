@@ -35,6 +35,10 @@ class Size
         return $this->width / $this->height;
     }
 
+    /**
+     * @param Size $target
+     * @return Size
+     */
     public function fit(Size $target)
     {
         if ($this->getRatio() > $target->getRatio()) {
